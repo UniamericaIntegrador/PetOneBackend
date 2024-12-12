@@ -1,0 +1,43 @@
+server:
+  port: 8443  # Configuração de porta HTTP
+  ssl:
+    key-store: file:/opt/backend/keystore.p12  # Caminho do seu keystore
+    key-store-password: petone  # Senha do keystore
+    key-store-type: PKCS12  # Tipo do keystore
+    key-alias: spring-boot-tls  # Alias do certificado no keystore
+    enabled: true  # Habilita SSL
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+  datasource:
+    url: jdbc:mariadb://192.168.56.118:3306/petOne
+    username: petonedb
+    password: P3t@Ne2024!
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://192.168.56.119:8080/realms/petone
+          jwk-set-uri: http://192.168.56.119:8080/realms/petone/protocol/openid-connect/certs
+
+  oauth2:
+    client:
+      registration:
+        keycloak:
+          client-id: petone
+          client-secret: 90URn6CkWsS2ctgvpssIjSPc2ell3A7q
+          scope: openid profile email
+      provider:
+        keycloak:
+          authorization-uri: http://192.168.56.119:8080/realms/petone/protocol/openid-connect/auth
+          token-uri: http://192.168.56.119:8080/realms/petone/protocol/openid-connect/token
+          user-info-uri: http://192.168.56.119:8080/realms/petone/protocol/openid-connect/userinfo
+          jwk-set-uri: http://192.168.56.119:8080/realms/petone/protocol/openid-connect/certs
+          issuer-uri: http://192.168.56.119:8080/realms/petone
